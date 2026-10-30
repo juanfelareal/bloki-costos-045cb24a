@@ -48,6 +48,8 @@ strong{font-weight:600;color:var(--ink);}
 .x{color:var(--muted);font-weight:400;margin:0 4px;}
 .doc-meta{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;}
 .title{padding-top:48px;}
+/* Las notas van debajo de tarjetas de ancho completo: no heredan el ancho de lectura del texto. */
+section > .note{max-width:none;}
 .note{margin-top:18px;padding:16px 18px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);color:var(--ink-2);font-size:15px;}
 .note.warn{border-left-color:var(--warn);}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
@@ -276,6 +278,7 @@ strong{font-weight:600;color:var(--ink);}
       <label class="in"><span>Envío cobrado en unidad suelta</span><div class="row"><em>$</em><input type="number" id="envioUno" value="12000" step="500"></div></label>
       <label class="in"><span>Envío cobrado en los combos</span><div class="row"><em>$</em><input type="number" id="envioCombo" value="0" step="500"></div></label>
       <label class="in"><span>Flete que paga la marca, por pedido</span><div class="row"><em>$</em><input type="number" id="flete" value="13000" step="500"></div></label>
+      <label class="in"><span>Fulfillment por pedido despachado, antes de IVA</span><div class="row"><em>$</em><input type="number" id="ff" value="2000" step="100"><em class="js-ff-iva"></em></div></label>
       <label class="in"><span>Comisión Bold, sobre el total cobrado</span><div class="row"><input type="number" id="boldPct" value="2.49" step="0.01"><em>% + $</em><input type="number" id="boldFijo" value="450" step="50"></div></label>
       <label class="in"><span>Comisión Shopify por pasarela externa</span><div class="row"><input type="number" id="shopPct" value="1" step="0.1"><em>%</em></div></label>
       <label class="in pend"><span>Impuestos sobre la venta <span class="tagm w">Por confirmar</span></span><div class="row"><input type="number" id="impPct" value="0" step="0.1"><em>%</em></div></label>
@@ -290,8 +293,8 @@ strong{font-weight:600;color:var(--ink);}
     <h2>Los dos escenarios, <b>lado a lado.</b></h2>
     <p>Arriba el precio regular, abajo el de lanzamiento. Dentro de cada escenario los combos descuentan contra su propia ancla, así que el x3 es un 33,3 % menos por unidad en los dos casos. Hay dos lecturas en la tabla: el <strong>pago máximo por venta</strong> dice cuánto se puede pagar por conseguir ese pedido —ahí los combos ganan, porque mueven dos o tres Bloki de una—; el <strong>deja por unidad</strong> dice cuánto queda por cada Bloki que sale de la bodega, y ahí se ve el costo real de cada descuento.</p>
     <div class="ptable js-ptable"></div>
-    <p class="note warn"><strong>Lo que cuesta el lanzamiento, en una línea:</strong> un Bloki vendido solo a precio regular deja <strong>$57.888</strong>. El mismo Bloki dentro de un combo x3 de lanzamiento deja <strong>$21.425</strong>, un 37 % de eso. El precio de lanzamiento es una inversión en volumen y en reseñas, no un escenario sostenible: vale la pena saber de antemano cuántas unidades se van a vender así.</p>
-    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. El flete neto es lo que pone la marca: $13.000 menos lo que cobre de envío. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido. El porcentaje de cada combo se mide contra la unidad de su propio escenario.</p>
+    <p class="note warn"><strong>Lo que cuesta el lanzamiento, en una línea:</strong> un Bloki vendido solo a precio regular deja <strong>$55.508</strong>. El mismo Bloki dentro de un combo x3 de lanzamiento deja <strong>$20.632</strong>, un 37 % de eso. El precio de lanzamiento es una inversión en volumen y en reseñas, no un escenario sostenible: vale la pena saber de antemano cuántas unidades se van a vender así.</p>
+    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. La logística junta dos cosas: el flete que pone la marca —$13.000 menos lo que cobre de envío— y los $2.380 de fulfillment que cobra Simplistics por despachar, que son los mismos en todos los pedidos. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido. El porcentaje de cada combo se mide contra la unidad de su propio escenario.</p>
   </section>
 
   <!-- ESCALABILIDAD -->
@@ -339,7 +342,7 @@ strong{font-weight:600;color:var(--ink);}
 
     <div class="pl js-pl"></div>
     <p class="note js-veredicto"></p>
-    <p class="note"><strong>Para qué sirve mover la mezcla.</strong> El break-even que sale abajo es el promedio ponderado de los seis precios: con la mezcla que viene puesta da <strong>1,54</strong>, y se mueve entre <strong>1,31</strong> —todo a unidad regular— y <strong>1,83</strong> —todo a combo x3 de lanzamiento—. Ese es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto. Y las unidades que salen de bodega no son los pedidos: con 500 pedidos de esta mezcla salen <strong>775 Bloki</strong>.</p>
+    <p class="note"><strong>Para qué sirve mover la mezcla.</strong> El break-even que sale abajo es el promedio ponderado de los seis precios: con la mezcla que viene puesta da <strong>1,61</strong>, y se mueve entre <strong>1,36</strong> —todo a unidad regular— y <strong>1,90</strong> —todo a combo x3 de lanzamiento—. Ese es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto. Y las unidades que salen de bodega no son los pedidos: con 500 pedidos de esta mezcla salen <strong>775 Bloki</strong>.</p>
   </section>
 
   <!-- PENDIENTES -->
@@ -350,13 +353,13 @@ strong{font-weight:600;color:var(--ink);}
       <li><div>Si el envío gratis de los combos se sostiene<span>Cuesta $13.000 por pedido y sale entero del margen. Con los precios anclados al regular ya se aguanta, pero es el primer lugar donde buscar margen si hace falta.</span></div></li>
       <li><div>Tarifas reales de Bold al arrancar<span>Las que están puestas (2,49 % + $450) son las de Barba Roja, que factura $85 millones al mes. Al arrancar, Bold suele cobrar más.</span></div></li>
       <li><div>Régimen de impuestos<span>Es el único costo variable que todavía está en cero. Con el porcentaje real, el break-even queda cerrado del todo.</span></div></li>
-      <li><div>Si los costos de producción ya traen IVA<span>Si esos $11.152 son con IVA y parte es descontable, el costo real baja y el break-even mejora.</span></div></li>
+      <li><div>Qué IVA es descontable<span>El modelo descuenta el IVA de la venta completo y cobra el fulfillment con IVA incluido. Si la marca es responsable de IVA, ese IVA de las compras y los servicios se cruza contra el de la venta, y el costo real baja. Lo mismo con los $11.152 de producto, si ya vienen con IVA.</span></div></li>
     </ul>
     <p class="note warn"><strong>Lo que este documento no dice:</strong> "Queda" es antes de impuestos, de los costos fijos y de lo que cueste producir el contenido del lanzamiento. Es lo que deja la operación de vender, no la utilidad final.</p>
   </section>
 
   <div class="next">
-    <h2><b>El piso ya está.</b><br><span class="soft">De 1,31 en la unidad regular a 1,83 en el combo x3 de lanzamiento.</span></h2>
+    <h2><b>El piso ya está.</b><br><span class="soft">De 1,36 en la unidad regular a 1,90 en el combo x3 de lanzamiento.</span></h2>
     <p>Con el régimen de impuestos y las tarifas reales de Bold queda cerrado del todo, y se puede definir cuánto se invierte el día del lanzamiento.</p>
   </div>
 
@@ -368,7 +371,7 @@ strong{font-weight:600;color:var(--ink);}
 </div>
 <script>
 (function(){
-  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
+  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','ff','boldPct','boldFijo','shopPct','impPct','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
   var SKUS = [
     {n:'Unidad',    g:'reg', id:'rUno', ped:'pedRUno', ancla:'rUno', u:1, combo:false},
     {n:'Combo x2',  g:'reg', id:'rX2',  ped:'pedRX2',  ancla:'rUno', u:2, combo:true},
@@ -399,10 +402,11 @@ strong{font-weight:600;color:var(--ink);}
       bold: cobrado*v('boldPct')/100 + v('boldFijo'),
       shopify: cobrado*v('shopPct')/100,
       flete: v('flete'),
+      ff: v('ff')*(1+iva),
       impuestos: sin*v('impPct')/100
     };
   }
-  function margen(p){ return p.sin - p.costo - p.bold - p.shopify - p.impuestos - (p.flete - p.envio); }
+  function margen(p){ return p.sin - p.costo - p.bold - p.shopify - p.ff - p.impuestos - (p.flete - p.envio); }
 
   function pintarSku(){
     $('.js-sku').innerHTML = ['reg','lan'].map(function(g){
@@ -420,6 +424,7 @@ strong{font-weight:600;color:var(--ink);}
       ['Flete', p.flete, '#B8B4AD', 'lo que se le paga a la transportadora'],
       ['Comisión Bold', p.bold, '#6E6A64', 'sobre todo lo que paga el cliente'],
       ['Comisión Shopify', p.shopify, '#9C9790', 'por procesar con pasarela externa'],
+      ['Fulfillment', p.ff, '#A8A39B', 'lo que cobra Simplistics por despachar'],
       ['Impuestos', p.impuestos, '#CFCBC4', 'sobre la venta sin IVA'],
       ['Queda para pauta y utilidad', m, '#44BF47', 'lo único con lo que se compra una venta']
     ].filter(function(x){ return Math.abs(x[1]) > 1; });
@@ -435,7 +440,7 @@ strong{font-weight:600;color:var(--ink);}
 
   function pintarTabla(){
     var head = '<div class="pr ph"><div class="pn">Qué se vende</div><div class="pv">Precio con IVA</div>'+
-      '<div class="pv">Costo</div><div class="pv">Comisiones</div><div class="pv">Flete neto</div>'+
+      '<div class="pv">Costo</div><div class="pv">Comisiones</div><div class="pv">Logística</div>'+
       '<div class="pv">Pago máx. por venta</div><div class="pv">Deja por unidad</div><div class="pv">Break-even</div></div>';
     var gActual = null;
     $('.js-ptable').innerHTML = head + SKUS.map(function(s,i){
@@ -448,7 +453,7 @@ strong{font-weight:600;color:var(--ink);}
         '<div class="pv"><span>Precio con IVA</span>'+cop(pvp(s))+'</div>'+
         '<div class="pv"><span>Costo</span>'+cop(p.costo)+'</div>'+
         '<div class="pv"><span>Comisiones</span>'+cop(p.bold+p.shopify)+'</div>'+
-        '<div class="pv"><span>Flete neto</span>'+cop(p.flete-p.envio)+'</div>'+
+        '<div class="pv"><span>Logística</span>'+cop(p.flete-p.envio+p.ff)+'</div>'+
         '<div class="pv"><span>Pago máx. por venta</span>'+cop(m)+'</div>'+
         '<div class="pv"><span>Deja por unidad</span>'+cop(m/s.u)+'</div>'+
         '<div class="pv be"><span>Break-even</span>'+(m>0?dec(p.sin/m,2):'—')+'</div></div>';
@@ -510,12 +515,12 @@ strong{font-weight:600;color:var(--ink);}
 
   /* El mes es la suma de los seis precios: cada uno con sus pedidos. */
   function pintarPL(){
-    var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, imp:0, sin:0, margen:0, ped:0, und:0};
+    var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, ff:0, imp:0, sin:0, margen:0, ped:0, und:0};
     SKUS.forEach(function(sk){
       var n = v(sk.ped); if (!(n > 0)) return;
       var p = unidad(sk), m = margen(p);
       t.venta += n*p.cobrado; t.iva += n*p.iva; t.costo += n*p.costo;
-      t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete;
+      t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete; t.ff += n*p.ff;
       t.imp += n*p.impuestos; t.sin += n*p.sin; t.margen += n*m;
       t.ped += n; t.und += n*sk.u;
     });
@@ -525,6 +530,7 @@ strong{font-weight:600;color:var(--ink);}
     var berMix = t.margen > 0 ? t.sin/t.margen : 0;
     var por = function(x){ return t.ped ? x/t.ped : 0; };
 
+    $('.js-ff-iva').textContent = '+ IVA = '+cop(v('ff')*(1+v('iva')/100));
     $('.js-tot-ped').textContent = t.ped.toLocaleString('es-CO');
     $('.js-tot-und').textContent = t.und.toLocaleString('es-CO')+' unidades';
     $('.js-venta').textContent = mm(t.venta);
@@ -539,6 +545,7 @@ strong{font-weight:600;color:var(--ink);}
       ['','Comisión Bold', -t.bold, -por(t.bold), tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
       ['','Comisión Shopify', -t.shop, -por(t.shop), tar(v('shopPct'))+' % sobre el total cobrado'],
       ['','Flete a la transportadora', -t.flete, -por(t.flete), cop(v('flete'))+' por pedido, cobre o no cobre envío'],
+      ['','Fulfillment', -t.ff, -por(t.ff), 'Simplistics: '+cop(v('ff'))+' + IVA por pedido despachado'],
       ['','Impuestos sobre la venta', -t.imp, -por(t.imp), v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente de confirmar el régimen'],
       ['sub','Queda antes de pauta', t.margen, por(t.margen), 'Con esto se compran las ventas'],
       ['','Inversión en pauta', -pauta, -por(pauta), 'ROAS de mercancía '+dec(roas,2)],
