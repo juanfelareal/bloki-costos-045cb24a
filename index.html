@@ -106,6 +106,7 @@ strong{font-weight:600;color:var(--ink);}
 .pr .pn .pu{display:block;font-size:12px;color:var(--muted);margin-top:4px;font-weight:400;}
 .pr.ph{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:15px;padding-bottom:15px;}
 .pr.hl{background:rgba(68,191,71,.08);}
+.pr.grp{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(18,18,18,.035);padding:10px 18px;}
 .pr.hl .be{font-weight:600;}
 .fine{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.5;}
 
@@ -194,7 +195,9 @@ strong{font-weight:600;color:var(--ink);}
 }
 
 /* Selector de SKU */
-.sku{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.sku{display:grid;gap:16px;margin-top:24px;}
+.sku-fila{display:grid;gap:8px;}
+.sku-btns{display:flex;flex-wrap:wrap;gap:8px;}
 .sku button{font-family:var(--sans);font-size:15px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:9px 20px;cursor:pointer;}
 .sku button.on{background:var(--ink);border-color:var(--ink);color:var(--on-dark);}
 .sku button em{font-style:normal;color:var(--muted);margin-left:7px;font-size:13px;}
@@ -216,7 +219,7 @@ strong{font-weight:600;color:var(--ink);}
     <p class="lede">Bloki todavía no tiene historia de pauta, así que no hay un retorno medido contra el cual compararse. Lo que sí se puede calcular desde ya es el piso: a partir de qué retorno cada venta empieza a perder plata. Ese número es el que define cuánto se puede invertir el día del lanzamiento.</p>
     <div class="pills">
       <span class="pill"><span class="dot"></span>Costos de producción confirmados</span>
-      <span class="pill">Precios de lanzamiento</span>
+      <span class="pill">Precio regular y de lanzamiento</span>
       <span class="pill">Envío y flete confirmados · impuestos por definir</span>
     </div>
   </div>
@@ -248,10 +251,12 @@ strong{font-weight:600;color:var(--ink);}
     <p>Cámbialos y todo se recalcula. Los que están en naranja todavía no están definidos, y son los que más mueven la aguja.</p>
 
     <div class="ins">
-      <label class="in"><span>Precio regular, con IVA</span><div class="row"><em>$</em><input type="number" id="pvpReg" value="89900" step="1000"></div></label>
-      <label class="in"><span>Precio de lanzamiento, con IVA</span><div class="row"><em>$</em><input type="number" id="pvpLan" value="69900" step="1000"></div></label>
-      <label class="in"><span>Combo x2, con IVA</span><div class="row"><em>$</em><input type="number" id="pvpX2" value="154900" step="1000"></div></label>
-      <label class="in"><span>Combo x3, con IVA</span><div class="row"><em>$</em><input type="number" id="pvpX3" value="179900" step="1000"></div></label>
+      <label class="in"><span>Regular · unidad</span><div class="row"><em>$</em><input type="number" id="rUno" value="89900" step="1000"></div></label>
+      <label class="in"><span>Regular · combo x2</span><div class="row"><em>$</em><input type="number" id="rX2" value="154900" step="1000"></div></label>
+      <label class="in"><span>Regular · combo x3</span><div class="row"><em>$</em><input type="number" id="rX3" value="179900" step="1000"></div></label>
+      <label class="in"><span>Lanzamiento · unidad</span><div class="row"><em>$</em><input type="number" id="lUno" value="69900" step="1000"></div></label>
+      <label class="in"><span>Lanzamiento · combo x2</span><div class="row"><em>$</em><input type="number" id="lX2" value="119900" step="1000"></div></label>
+      <label class="in"><span>Lanzamiento · combo x3</span><div class="row"><em>$</em><input type="number" id="lX3" value="139900" step="1000"></div></label>
       <label class="in"><span>Producción de un Bloki</span><div class="row"><em>$</em><input type="number" id="prod" value="9500" step="100"></div></label>
       <label class="in"><span>Tag NFC</span><div class="row"><em>$</em><input type="number" id="tag" value="1012" step="50"></div></label>
       <label class="in"><span>Bolsa, por unidad</span><div class="row"><em>$</em><input type="number" id="bolsa" value="640" step="50"></div></label>
@@ -265,16 +270,17 @@ strong{font-weight:600;color:var(--ink);}
       <label class="in pend"><span>Impuestos sobre la venta <span class="tagm w">Por confirmar</span></span><div class="row"><input type="number" id="impPct" value="0" step="0.1"><em>%</em></div></label>
     </div>
 
-    <p class="note warn"><strong>El envío no es neutro, y en los combos es el costo escondido del lanzamiento.</strong> En la unidad suelta el cliente paga <strong>$12.000</strong> y el flete cuesta <strong>$13.000</strong>: la marca pone $1.000. En los combos el envío va gratis, así que la marca pone los <strong>$13.000 completos</strong>. Eso solo ya mueve el break-even del combo x3 a <strong class="js-ber-x3">1,83</strong>, contra <strong class="js-ber-reg">1,31</strong> de la unidad a precio regular.</p>
+    <p class="note warn"><strong>El envío no es neutro, y en los combos es el costo escondido.</strong> En la unidad suelta el cliente paga <strong>$12.000</strong> y el flete cuesta <strong>$13.000</strong>: la marca pone $1.000. En los combos el envío va gratis, así que la marca pone los <strong>$13.000 completos</strong>. Sumado al descuento, eso lleva el break-even del combo x3 de lanzamiento a <strong class="js-ber-x3">1,83</strong>, contra <strong class="js-ber-reg">1,31</strong> de la unidad a precio regular. Son los dos extremos del documento.</p>
   </section>
 
   <!-- PRECIOS -->
   <section>
     <p class="label">Precio por precio</p>
-    <h2>Lo que aguanta <b>cada forma de venderlo.</b></h2>
-    <p>Los combos están anclados al precio regular, con el mismo descuento por unidad que tenían antes: <strong>13,8 %</strong> en el x2 y <strong>33,3 %</strong> en el x3. Dos lecturas en la misma tabla. El <strong>pago máximo por venta</strong> dice cuánto se puede pagar por conseguir ese pedido: ahí los combos ganan, porque mueven dos o tres Bloki de una. El <strong>deja por unidad</strong> dice cuánto queda por cada Bloki que sale de la bodega: ahí la unidad suelta sigue arriba, porque el combo regala el envío y descuenta el precio.</p>
+    <h2>Los dos escenarios, <b>lado a lado.</b></h2>
+    <p>Arriba el precio regular, abajo el de lanzamiento. Dentro de cada escenario los combos descuentan contra su propia ancla, así que el x3 es un 33,3 % menos por unidad en los dos casos. Hay dos lecturas en la tabla: el <strong>pago máximo por venta</strong> dice cuánto se puede pagar por conseguir ese pedido —ahí los combos ganan, porque mueven dos o tres Bloki de una—; el <strong>deja por unidad</strong> dice cuánto queda por cada Bloki que sale de la bodega, y ahí se ve el costo real de cada descuento.</p>
     <div class="ptable js-ptable"></div>
-    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. El flete neto es lo que pone la marca: $13.000 menos lo que cobre de envío. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido.</p>
+    <p class="note warn"><strong>Lo que cuesta el lanzamiento, en una línea:</strong> un Bloki vendido solo a precio regular deja <strong>$57.888</strong>. El mismo Bloki dentro de un combo x3 de lanzamiento deja <strong>$21.425</strong>, un 37 % de eso. El precio de lanzamiento es una inversión en volumen y en reseñas, no un escenario sostenible: vale la pena saber de antemano cuántas unidades se van a vender así.</p>
+    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. El flete neto es lo que pone la marca: $13.000 menos lo que cobre de envío. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido. El porcentaje de cada combo se mide contra la unidad de su propio escenario.</p>
   </section>
 
   <!-- ESCALABILIDAD -->
@@ -297,7 +303,7 @@ strong{font-weight:600;color:var(--ink);}
   <!-- ESCENARIO -->
   <section>
     <p class="label">El escenario del mes</p>
-    <h2>Lo que deja <b>un mes de lanzamiento.</b></h2>
+    <h2>Lo que deja <b>un mes.</b></h2>
     <p>Pon cuántos pedidos al mes y con qué retorno, y la tabla baja desde lo que cobra la tienda hasta lo que queda. La columna de la izquierda es el mes; la de la derecha, un pedido.</p>
 
     <div class="ins" style="grid-template-columns:repeat(auto-fit,minmax(196px,1fr));">
@@ -309,7 +315,7 @@ strong{font-weight:600;color:var(--ink);}
 
     <div class="pl js-pl"></div>
     <p class="note js-veredicto"></p>
-    <p class="note"><strong>Compara los cuatro con el mismo número de pedidos.</strong> A 500 pedidos y un ROAS de 2,5, la unidad a precio regular deja $13.834.711 y el combo x3 deja $18.010.686. El combo pide más inventario, pero cada pedido trae tres Bloki y un solo costo de adquisición: por eso termina dejando más plata, aun regalando el envío.</p>
+    <p class="note"><strong>Los seis con los mismos 500 pedidos y un ROAS de 2,5.</strong> A precio regular: unidad $13.834.711 · x2 $17.720.415 · x3 $18.010.686. A precio de lanzamiento: unidad $9.141.694 · x2 $9.507.636 · x3 $8.624.653. Dentro de cada escenario los combos ayudan, porque traen más producto por un solo costo de adquisición. Pero el salto grande no está entre combos: está entre vender a $89.900 y vender a $69.900.</p>
   </section>
 
   <!-- PENDIENTES -->
@@ -326,7 +332,7 @@ strong{font-weight:600;color:var(--ink);}
   </section>
 
   <div class="next">
-    <h2><b>El piso ya está.</b><br><span class="soft">De 1,31 en la unidad suelta a 1,57 en el combo x3.</span></h2>
+    <h2><b>El piso ya está.</b><br><span class="soft">De 1,31 en la unidad regular a 1,83 en el combo x3 de lanzamiento.</span></h2>
     <p>Con el régimen de impuestos y las tarifas reales de Bold queda cerrado del todo, y se puede definir cuánto se invierte el día del lanzamiento.</p>
   </div>
 
@@ -338,13 +344,16 @@ strong{font-weight:600;color:var(--ink);}
 </div>
 <script>
 (function(){
-  var IDS = ['pvpReg','pvpLan','pvpX2','pvpX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','ped','roas'];
+  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','ped','roas'];
   var SKUS = [
-    {k:'reg', n:'Bloki',    sub:'precio regular',     id:'pvpReg', u:1, combo:false},
-    {k:'lan', n:'Bloki',    sub:'precio lanzamiento', id:'pvpLan', u:1, combo:false},
-    {k:'x2',  n:'Combo x2', sub:'lanzamiento',        id:'pvpX2',  u:2, combo:true},
-    {k:'x3',  n:'Combo x3', sub:'lanzamiento',        id:'pvpX3',  u:3, combo:true}
+    {n:'Unidad',    g:'reg', id:'rUno', ancla:'rUno', u:1, combo:false},
+    {n:'Combo x2',  g:'reg', id:'rX2',  ancla:'rUno', u:2, combo:true},
+    {n:'Combo x3',  g:'reg', id:'rX3',  ancla:'rUno', u:3, combo:true},
+    {n:'Unidad',    g:'lan', id:'lUno', ancla:'lUno', u:1, combo:false},
+    {n:'Combo x2',  g:'lan', id:'lX2',  ancla:'lUno', u:2, combo:true},
+    {n:'Combo x3',  g:'lan', id:'lX3',  ancla:'lUno', u:3, combo:true}
   ];
+  var GRUPOS = {reg:'Precio regular', lan:'Precio de lanzamiento'};
   function pvp(s){ return v(s.id); }
   var sel = 0;
 
@@ -372,9 +381,11 @@ strong{font-weight:600;color:var(--ink);}
   function margen(p){ return p.sin - p.costo - p.bold - p.shopify - p.impuestos - (p.flete - p.envio); }
 
   function pintarSku(){
-    $('.js-sku').innerHTML = SKUS.map(function(s,i){
-      return '<button type="button" data-i="'+i+'"'+(i===sel?' class="on"':'')+'>'+s.n+
-             ' <em>'+cop(pvp(s))+'</em></button>';
+    $('.js-sku').innerHTML = ['reg','lan'].map(function(g){
+      return '<div class="sku-fila"><span class="label">'+GRUPOS[g]+'</span><div class="sku-btns">'+
+        SKUS.map(function(s,i){ return s.g===g
+          ? '<button type="button" data-i="'+i+'"'+(i===sel?' class="on"':'')+'>'+s.n+' <em>'+cop(pvp(s))+'</em></button>'
+          : ''; }).join('')+'</div></div>';
     }).join('');
   }
 
@@ -402,11 +413,14 @@ strong{font-weight:600;color:var(--ink);}
     var head = '<div class="pr ph"><div class="pn">Qué se vende</div><div class="pv">Precio con IVA</div>'+
       '<div class="pv">Costo</div><div class="pv">Comisiones</div><div class="pv">Flete neto</div>'+
       '<div class="pv">Pago máx. por venta</div><div class="pv">Deja por unidad</div><div class="pv">Break-even</div></div>';
+    var gActual = null;
     $('.js-ptable').innerHTML = head + SKUS.map(function(s,i){
+      var cab = '';
+      if (s.g !== gActual) { gActual = s.g; cab = '<div class="pr grp">'+GRUPOS[s.g]+' · ancla '+cop(v(s.ancla))+'</div>'; }
       var p = unidad(s), m = margen(p);
-      var pu = pvp(s)/s.u, off = (1 - pu/v('pvpReg'))*100;
-      var pie = s.u>1 ? '<span class="pu">'+cop(pu)+' por unidad · '+dec(off,1)+' % menos que el precio regular</span>' : '';
-      return '<div class="pr'+(i===sel?' hl':'')+'"><div class="pn">'+s.n+' <span class="tagm">'+s.sub+'</span>'+pie+'</div>'+
+      var pu = pvp(s)/s.u, off = (1 - pu/v(s.ancla))*100;
+      var pie = s.u>1 ? '<span class="pu">'+cop(pu)+' por unidad · '+dec(off,1)+' % menos</span>' : '';
+      return cab + '<div class="pr'+(i===sel?' hl':'')+'"><div class="pn">'+s.n+pie+'</div>'+
         '<div class="pv"><span>Precio con IVA</span>'+cop(pvp(s))+'</div>'+
         '<div class="pv"><span>Costo</span>'+cop(p.costo)+'</div>'+
         '<div class="pv"><span>Comisiones</span>'+cop(p.bold+p.shopify)+'</div>'+
@@ -506,7 +520,7 @@ strong{font-weight:600;color:var(--ink);}
 
   /* El envío es la decisión que más mueve el piso: se muestran los dos lados. */
   function pintarEnvio(){
-    [['.js-ber-reg', 0], ['.js-ber-x3', 3]].forEach(function(x){
+    [['.js-ber-reg', 0], ['.js-ber-x3', 5]].forEach(function(x){
       var p = unidad(SKUS[x[1]]), m = margen(p);
       $(x[0]).textContent = m > 0 ? dec(p.sin/m, 2) : '—';
     });
@@ -517,7 +531,7 @@ strong{font-weight:600;color:var(--ink);}
     $('.js-cobrado').textContent = cop(p.cobrado);
     $('.js-cobrado-2').textContent = cop(p.cobrado);
     $('.js-margen-txt').textContent = cop(m);
-    $('.js-sku-txt').textContent = 'lo que paga el cliente por '+(s.u>1?'un ':'un ')+s.n.toLowerCase()+' a '+s.sub;
+    $('.js-sku-txt').textContent = 'lo que paga el cliente por '+(s.u>1?'un ':'una ')+s.n.toLowerCase()+' a '+GRUPOS[s.g].toLowerCase();
     pintarSku(); pintarAnatomia(p,m); pintarTabla(); pintarBarra(p,m); pintarPL(p,m); pintarEnvio();
   }
 
