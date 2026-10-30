@@ -370,7 +370,7 @@ section > .note{max-width:none;}
 
     <div class="pl js-pl"></div>
     <p class="note js-veredicto"></p>
-    <p class="note"><strong>De dónde sale la mezcla.</strong> Los 10 primeros pedidos fueron 4 unidades, 3 combos x2 y 3 combos x3 — todos a precio de lanzamiento, ninguno a precio regular. Son <strong>1,9 Bloki por pedido</strong>, así que las unidades que salen de bodega casi doblan el número de pedidos: con 500 pedidos salen <strong>950 Bloki</strong>. El break-even que sale abajo es el promedio ponderado de esa mezcla, y es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto.</p>
+    <p class="note"><strong>De dónde sale la mezcla.</strong> Los 10 primeros pedidos fueron 4 unidades, 3 combos x2 y 3 combos x3 — todos a precio de lanzamiento, ninguno a precio regular. Son <strong>1,9 Bloki por pedido</strong>, así que vender 5.000 unidades no pide 5.000 pedidos sino unos <strong>2.632</strong>. El break-even que sale abajo es el promedio ponderado de esa mezcla, y es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto.</p>
   </section>
 
   <!-- PENDIENTES -->
@@ -462,7 +462,7 @@ section > .note{max-width:none;}
     var partes = [
       ['Costo de producto', p.costo, '#121314', 'producción, tag, bolsa y empaque'],
       ['IVA', p.iva, '#8E8C88', 'se le entrega a la DIAN, no es de la marca'],
-      ['Flete', p.flete, '#B8B4AD', 'lo que se le paga a la transportadora'],
+      ['Flete', p.flete, '#B8B4AD', 'lo que se le paga a la transportadora por el despacho'],
       ['Comisión Bold', p.bold, '#6E6A64', 'sobre todo lo que paga el cliente'],
       ['Comisión Shopify', p.shopify, '#9C9790', 'por procesar con pasarela externa'],
       ['Fulfillment', p.ff, '#A8A39B', 'Simplistics, por despachar el pedido'],
@@ -559,12 +559,12 @@ section > .note{max-width:none;}
     /* Los Bloki al mes son el punto de partida: los pedidos salen de cuántas unidades trae cada uno. */
     var undPorPedido = SKUS.reduce(function(a, sk){ return a + v(sk.ped)/100 * sk.u; }, 0);
     var pedidos = undPorPedido > 0 ? v('undTotal')/undPorPedido : 0;
-    var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, ff:0, imp:0, sin:0, margen:0, ped:0, und:0};
+    var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, ff:0, imp:0, sin:0, margen:0, ped:0, und:0, envio:0};
     SKUS.forEach(function(sk){
       var n = pedidos * v(sk.ped)/100; if (!(n > 0)) return;
       var p = unidad(sk), m = margen(p);
       t.venta += n*p.cobrado; t.iva += n*p.iva; t.costo += n*p.costo;
-      t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete; t.ff += n*p.ff;
+      t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete; t.ff += n*p.ff; t.envio += n*p.envio;
       t.imp += n*p.impuestos; t.sin += n*p.sin; t.margen += n*m;
       t.ped += n; t.und += n*sk.u;
     });
@@ -587,7 +587,8 @@ section > .note{max-width:none;}
       ['','Costo de producto', -t.costo, -por(t.costo), cop(v('prod')+v('tag')+v('bolsa'))+' por unidad + '+cop(v('postal'))+' de empaque por pedido'],
       ['','Comisión Bold', -t.bold, -por(t.bold), tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
       ['','Comisión Shopify', -t.shop, -por(t.shop), tar(v('shopPct'))+' % sobre el total cobrado'],
-      ['','Flete a la transportadora', -t.flete, -por(t.flete), cop(v('flete'))+' por pedido, cobre o no cobre envío'],
+      ['','Flete a la transportadora', -t.flete, -por(t.flete),
+       cop(v('flete'))+' por cada despacho. El envío que paga el cliente ('+cop(por(t.envio))+' por pedido en promedio) ya está contado arriba, dentro de lo que cobra la tienda'],
       ['','Fulfillment', -t.ff, -por(t.ff), 'Simplistics: '+cop(v('ff'))+' por pedido despachado, sin IVA porque es descontable'],
       ['','Régimen SIMPLE', -t.imp, -por(t.imp), v('impPct')>0 ? 'SIMPLE grupo 2: '+tar(v('impPct'))+' % de la venta sin IVA' : 'Sin impuestos sobre la venta'],
       ['sub','Queda antes de pauta', t.margen, por(t.margen), 'Con esto se compran las ventas'],
