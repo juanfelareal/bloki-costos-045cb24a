@@ -194,6 +194,17 @@ strong{font-weight:600;color:var(--ink);}
   .in input{border-bottom:0;}
 }
 
+
+/* Mezcla del mes: cuántos pedidos de cada precio */
+.mezcla{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;}
+.mz-g{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;}
+.mz-ins{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
+.mz{display:block;}
+.mz span{display:block;font-size:12px;color:var(--muted);margin-bottom:5px;}
+.mz input{width:100%;min-width:0;font-family:var(--sans);font-size:19px;font-weight:500;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line-2);padding:2px 0;font-variant-numeric:tabular-nums;}
+.mz input:focus{outline:none;border-bottom-color:var(--accent);}
+@media (max-width:720px){.mezcla{grid-template-columns:1fr;}}
+
 /* Selector de SKU */
 .sku{display:grid;gap:16px;margin-top:24px;}
 .sku-fila{display:grid;gap:8px;}
@@ -303,19 +314,32 @@ strong{font-weight:600;color:var(--ink);}
   <!-- ESCENARIO -->
   <section>
     <p class="label">El escenario del mes</p>
-    <h2>Lo que deja <b>un mes.</b></h2>
-    <p>Pon cuántos pedidos al mes y con qué retorno, y la tabla baja desde lo que cobra la tienda hasta lo que queda. La columna de la izquierda es el mes; la de la derecha, un pedido.</p>
+    <h2>La mezcla del mes <b>y lo que deja.</b></h2>
+    <p>Reparte los pedidos del mes entre los seis precios y pon el retorno que asumes. La tabla suma todo y baja desde lo que cobra la tienda hasta lo que queda. La columna de la izquierda es el mes completo; la de la derecha, el promedio de un pedido de esa mezcla. Los números que vienen puestos son un ejemplo para arrancar, no un pronóstico.</p>
+
+    <div class="mezcla">
+      <div class="mz-g"><span class="label">Precio regular · pedidos al mes</span><div class="mz-ins">
+        <label class="mz"><span>Unidad</span><input type="number" id="pedRUno" value="50" step="10"></label>
+        <label class="mz"><span>Combo x2</span><input type="number" id="pedRX2" value="25" step="10"></label>
+        <label class="mz"><span>Combo x3</span><input type="number" id="pedRX3" value="15" step="10"></label>
+      </div></div>
+      <div class="mz-g"><span class="label">Precio de lanzamiento · pedidos al mes</span><div class="mz-ins">
+        <label class="mz"><span>Unidad</span><input type="number" id="pedLUno" value="250" step="10"></label>
+        <label class="mz"><span>Combo x2</span><input type="number" id="pedLX2" value="100" step="10"></label>
+        <label class="mz"><span>Combo x3</span><input type="number" id="pedLX3" value="60" step="10"></label>
+      </div></div>
+    </div>
 
     <div class="ins" style="grid-template-columns:repeat(auto-fit,minmax(196px,1fr));">
-      <label class="in"><span>Pedidos al mes</span><div class="row"><input type="number" id="ped" value="500" step="50"></div></label>
       <label class="in"><span>ROAS de mercancía (venta sin IVA ÷ pauta)</span><div class="row"><input type="number" id="roas" value="2.5" step="0.1"></div></label>
+      <label class="in"><span>Pedidos y unidades al mes</span><div class="row"><b class="js-tot-ped" style="font-size:19px;font-weight:500;"></b><em class="js-tot-und"></em></div></label>
       <label class="in"><span>Venta de la tienda que eso significa</span><div class="row"><b class="js-venta" style="font-size:19px;font-weight:500;"></b></div></label>
       <label class="in"><span>Inversión en pauta que eso pide</span><div class="row"><b class="js-pauta" style="font-size:19px;font-weight:500;"></b><em class="js-pautadia"></em></div></label>
     </div>
 
     <div class="pl js-pl"></div>
     <p class="note js-veredicto"></p>
-    <p class="note"><strong>Los seis con los mismos 500 pedidos y un ROAS de 2,5.</strong> A precio regular: unidad $13.834.711 · x2 $17.720.415 · x3 $18.010.686. A precio de lanzamiento: unidad $9.141.694 · x2 $9.507.636 · x3 $8.624.653. Dentro de cada escenario los combos ayudan, porque traen más producto por un solo costo de adquisición. Pero el salto grande no está entre combos: está entre vender a $89.900 y vender a $69.900.</p>
+    <p class="note"><strong>Para qué sirve mover la mezcla.</strong> El break-even que sale abajo es el promedio ponderado de los seis precios: con la mezcla que viene puesta da <strong>1,54</strong>, y se mueve entre <strong>1,31</strong> —todo a unidad regular— y <strong>1,83</strong> —todo a combo x3 de lanzamiento—. Ese es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto. Y las unidades que salen de bodega no son los pedidos: con 500 pedidos de esta mezcla salen <strong>775 Bloki</strong>.</p>
   </section>
 
   <!-- PENDIENTES -->
@@ -344,14 +368,14 @@ strong{font-weight:600;color:var(--ink);}
 </div>
 <script>
 (function(){
-  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','ped','roas'];
+  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
   var SKUS = [
-    {n:'Unidad',    g:'reg', id:'rUno', ancla:'rUno', u:1, combo:false},
-    {n:'Combo x2',  g:'reg', id:'rX2',  ancla:'rUno', u:2, combo:true},
-    {n:'Combo x3',  g:'reg', id:'rX3',  ancla:'rUno', u:3, combo:true},
-    {n:'Unidad',    g:'lan', id:'lUno', ancla:'lUno', u:1, combo:false},
-    {n:'Combo x2',  g:'lan', id:'lX2',  ancla:'lUno', u:2, combo:true},
-    {n:'Combo x3',  g:'lan', id:'lX3',  ancla:'lUno', u:3, combo:true}
+    {n:'Unidad',    g:'reg', id:'rUno', ped:'pedRUno', ancla:'rUno', u:1, combo:false},
+    {n:'Combo x2',  g:'reg', id:'rX2',  ped:'pedRX2',  ancla:'rUno', u:2, combo:true},
+    {n:'Combo x3',  g:'reg', id:'rX3',  ped:'pedRX3',  ancla:'rUno', u:3, combo:true},
+    {n:'Unidad',    g:'lan', id:'lUno', ped:'pedLUno', ancla:'lUno', u:1, combo:false},
+    {n:'Combo x2',  g:'lan', id:'lX2',  ped:'pedLX2',  ancla:'lUno', u:2, combo:true},
+    {n:'Combo x3',  g:'lan', id:'lX3',  ped:'pedLX3',  ancla:'lUno', u:3, combo:true}
   ];
   var GRUPOS = {reg:'Precio regular', lan:'Precio de lanzamiento'};
   function pvp(s){ return v(s.id); }
@@ -484,26 +508,41 @@ strong{font-weight:600;color:var(--ink);}
         dec(p.cobrado/m,2)+'</strong>: ese es el número contra el que se decide apagar un anuncio.';
   }
 
-  function pintarPL(p, m){
-    var ped = v('ped'), roas = v('roas');
-    var venta = ped*p.cobrado, sin = ped*p.sin;
-    var pauta = roas>0 ? sin/roas : 0;
-    var queda = ped*m - pauta;
-    $('.js-venta').textContent = mm(venta);
+  /* El mes es la suma de los seis precios: cada uno con sus pedidos. */
+  function pintarPL(){
+    var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, imp:0, sin:0, margen:0, ped:0, und:0};
+    SKUS.forEach(function(sk){
+      var n = v(sk.ped); if (!(n > 0)) return;
+      var p = unidad(sk), m = margen(p);
+      t.venta += n*p.cobrado; t.iva += n*p.iva; t.costo += n*p.costo;
+      t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete;
+      t.imp += n*p.impuestos; t.sin += n*p.sin; t.margen += n*m;
+      t.ped += n; t.und += n*sk.u;
+    });
+    var roas = v('roas');
+    var pauta = roas > 0 ? t.sin/roas : 0;
+    var queda = t.margen - pauta;
+    var berMix = t.margen > 0 ? t.sin/t.margen : 0;
+    var por = function(x){ return t.ped ? x/t.ped : 0; };
+
+    $('.js-tot-ped').textContent = t.ped.toLocaleString('es-CO');
+    $('.js-tot-und').textContent = t.und.toLocaleString('es-CO')+' unidades';
+    $('.js-venta').textContent = mm(t.venta);
     $('.js-pauta').textContent = mm(pauta);
     $('.js-pautadia').textContent = mm(pauta/30)+' al día';
+
     var filas = [
       ['head','Rubro','Al mes','Por pedido',''],
-      ['','Lo que cobra la tienda', venta, p.cobrado, 'Con IVA y con envío: todo lo que paga el cliente'],
-      ['','IVA', -ped*p.iva, -p.iva, 'Se le entrega a la DIAN'],
-      ['','Costo de producto', -ped*p.costo, -p.costo, cop(v('prod')+v('tag')+v('bolsa'))+' por unidad × '+p.u+' + '+cop(v('postal'))+' de empaque'],
-      ['','Comisión Bold', -ped*p.bold, -p.bold, tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
-      ['','Comisión Shopify', -ped*p.shopify, -p.shopify, tar(v('shopPct'))+' % sobre el total cobrado'],
-      ['','Flete a la transportadora', -ped*p.flete, -p.flete, p.envio>0 ? 'El cliente aporta '+cop(p.envio)+' de ese flete' : 'Envío gratis: lo asume la marca entera'],
-      ['','Impuestos sobre la venta', -ped*p.impuestos, -p.impuestos, v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente de confirmar el régimen'],
-      ['sub','Queda antes de pauta', ped*m, m, 'Con esto se compran las ventas'],
-      ['','Inversión en pauta', -pauta, -(ped?pauta/ped:0), 'ROAS de mercancía '+dec(roas,2)],
-      ['tot','Queda después de la pauta', queda, ped?queda/ped:0, 'Antes de impuestos y costos fijos']
+      ['','Lo que cobra la tienda', t.venta, por(t.venta), t.ped.toLocaleString('es-CO')+' pedidos · '+t.und.toLocaleString('es-CO')+' Bloki'],
+      ['','IVA', -t.iva, -por(t.iva), 'Se le entrega a la DIAN'],
+      ['','Costo de producto', -t.costo, -por(t.costo), cop(v('prod')+v('tag')+v('bolsa'))+' por unidad + '+cop(v('postal'))+' de empaque por pedido'],
+      ['','Comisión Bold', -t.bold, -por(t.bold), tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
+      ['','Comisión Shopify', -t.shop, -por(t.shop), tar(v('shopPct'))+' % sobre el total cobrado'],
+      ['','Flete a la transportadora', -t.flete, -por(t.flete), cop(v('flete'))+' por pedido, cobre o no cobre envío'],
+      ['','Impuestos sobre la venta', -t.imp, -por(t.imp), v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente de confirmar el régimen'],
+      ['sub','Queda antes de pauta', t.margen, por(t.margen), 'Con esto se compran las ventas'],
+      ['','Inversión en pauta', -pauta, -por(pauta), 'ROAS de mercancía '+dec(roas,2)],
+      ['tot','Queda después de la pauta', queda, por(queda), 'Antes de impuestos y costos fijos']
     ];
     $('.js-pl').innerHTML = filas.map(function(f){
       if (f[0]==='head') return '<div class="pl-r head"><div class="k">'+f[1]+'</div><div class="n">'+f[2]+'</div><div class="n pp">'+f[3]+'</div></div>';
@@ -511,11 +550,14 @@ strong{font-weight:600;color:var(--ink);}
              '</div><div class="n">'+mm(f[2])+'</div><div class="n pp">'+cop(f[3])+'</div></div>';
     }).join('');
 
-    $('.js-veredicto').innerHTML = queda <= 0
-      ? '<strong>Con estos números el mes no deja nada.</strong> Sube el retorno, baja el costo por pedido o revisa el envío.'
-      : '<strong>'+ped.toLocaleString('es-CO')+' pedidos al mes de '+SKUS[sel].n+' son '+mm(venta)+' de venta '+
-        'y '+mm(pauta)+' de pauta ('+mm(pauta/30)+' al día).</strong> Después de todo queda '+mm(queda)+
-        ', o sea '+cop(queda/ped)+' por pedido. Eso es antes de impuestos, costos fijos y producción de contenido.';
+    $('.js-veredicto').innerHTML = !t.ped
+      ? '<strong>Pon cuántos pedidos de cada precio esperas en el mes</strong> y la tabla se arma sola.'
+      : queda <= 0
+      ? '<strong>Con esta mezcla el mes no deja nada.</strong> El break-even de la mezcla es '+dec(berMix,2)+
+        ' y estás modelando '+dec(roas,2)+': o sube el retorno, o mueve la mezcla hacia los precios que más dejan.'
+      : '<strong>Esa mezcla da un break-even de '+dec(berMix,2)+'</strong>, que es el promedio ponderado de los seis precios. '+
+        'Con un ROAS de '+dec(roas,2)+' quedan '+mm(queda)+' al mes, o sea '+cop(por(queda))+' por pedido. '+
+        'Son '+t.und.toLocaleString('es-CO')+' Bloki saliendo de bodega: eso es lo que hay que tener producido.';
   }
 
   /* El envío es la decisión que más mueve el piso: se muestran los dos lados. */
@@ -532,7 +574,7 @@ strong{font-weight:600;color:var(--ink);}
     $('.js-cobrado-2').textContent = cop(p.cobrado);
     $('.js-margen-txt').textContent = cop(m);
     $('.js-sku-txt').textContent = 'lo que paga el cliente por '+(s.u>1?'un ':'una ')+s.n.toLowerCase()+' a '+GRUPOS[s.g].toLowerCase();
-    pintarSku(); pintarAnatomia(p,m); pintarTabla(); pintarBarra(p,m); pintarPL(p,m); pintarEnvio();
+    pintarSku(); pintarAnatomia(p,m); pintarTabla(); pintarBarra(p,m); pintarPL(); pintarEnvio();
   }
 
   $('.js-sku').addEventListener('click', function(ev){
