@@ -298,8 +298,8 @@ section > .note{max-width:none;}
         <div class="sup-r"><span>Empaque postal, por pedido</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="postal" value="1.500" class="din"></div></div>
       </div>
       <div class="sup-g"><span class="label">Logística, por pedido</span>
-        <div class="sup-r"><span>Envío cobrado · unidad suelta</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioUno" value="12.000" class="din"></div></div>
-        <div class="sup-r"><span>Envío cobrado · combos</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioCombo" value="0" class="din"></div></div>
+        <div class="sup-r"><span>Envío cobrado al cliente · unidad suelta</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioUno" value="12.000" class="din"></div></div>
+        <div class="sup-r"><span>Envío cobrado al cliente · combos</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioCombo" value="0" class="din"></div></div>
         <div class="sup-r"><span>Flete que paga la marca</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="flete" value="13.000" class="din"></div></div>
         <div class="sup-r"><span>Fulfillment Simplistics</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="ff" value="2.000" class="din"></div></div>
       </div>
@@ -344,8 +344,8 @@ section > .note{max-width:none;}
   <!-- ESCENARIO -->
   <section>
     <p class="label">El escenario del mes</p>
-    <h2>La mezcla del mes <b>y lo que deja.</b></h2>
-    <p>Pon cuántos pedidos esperas al mes y cómo se reparten entre los seis precios. La mezcla que viene puesta sale de los <strong>10 primeros pedidos reales</strong> de la tienda: <strong>40 % unidad, 30 % combo x2 y 30 % combo x3</strong>, todos a precio de lanzamiento. La tabla escala esa proporción y baja desde lo que cobra la tienda hasta lo que queda.</p>
+    <h2>2.000 Bloki al mes <b>y lo que dejan.</b></h2>
+    <p>El escenario está puesto en <strong>2.000 Bloki al mes</strong>, con la mezcla de los <strong>10 primeros pedidos reales</strong> de la tienda: <strong>40 % unidad, 30 % combo x2 y 30 % combo x3</strong>, todos a precio de lanzamiento. Como cada pedido lleva 1,9 Bloki en promedio, esos 2.000 salen en unos 1.053 pedidos. La base son las unidades, que es lo que hay que producir; los pedidos salen de la mezcla.</p>
 
     <div class="mezcla">
       <div class="mz-g"><span class="label">Precio regular · % de los pedidos</span><div class="mz-ins">
@@ -361,9 +361,9 @@ section > .note{max-width:none;}
     </div>
 
     <div class="ins" style="grid-template-columns:repeat(auto-fit,minmax(196px,1fr));">
-      <label class="in"><span>Pedidos al mes</span><div class="row"><input type="text" inputmode="numeric" id="pedTotal" value="500" class="din"></div></label>
+      <label class="in"><span>Bloki al mes</span><div class="row"><input type="text" inputmode="numeric" id="undTotal" value="2.000" class="din"></div></label>
       <label class="in"><span>ROAS de mercancía (venta sin IVA ÷ pauta)</span><div class="row"><input type="number" id="roas" value="2.5" step="0.1"></div></label>
-      <label class="in"><span>Pedidos y unidades al mes</span><div class="row"><b class="js-tot-ped" style="font-size:19px;font-weight:500;"></b><em class="js-tot-und"></em></div></label>
+      <label class="in"><span>Pedidos que eso significa</span><div class="row"><b class="js-tot-ped" style="font-size:19px;font-weight:500;"></b><em class="js-tot-und"></em></div></label>
       <label class="in"><span>Venta de la tienda que eso significa</span><div class="row"><b class="js-venta" style="font-size:19px;font-weight:500;"></b></div></label>
       <label class="in"><span>Inversión en pauta que eso pide</span><div class="row"><b class="js-pauta" style="font-size:19px;font-weight:500;"></b><em class="js-pautadia"></em></div></label>
     </div>
@@ -399,7 +399,7 @@ section > .note{max-width:none;}
 </div>
 <script>
 (function(){
-  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','ff','boldPct','boldFijo','shopPct','impPct','pedTotal','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
+  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','ff','boldPct','boldFijo','shopPct','impPct','undTotal','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
   var SKUS = [
     {n:'Unidad',    g:'reg', id:'rUno', ped:'pedRUno', ancla:'rUno', u:1, combo:false},
     {n:'Combo x2',  g:'reg', id:'rX2',  ped:'pedRX2',  ancla:'rUno', u:2, combo:true},
@@ -556,9 +556,12 @@ section > .note{max-width:none;}
 
   /* El mes es la suma de los seis precios: cada uno con sus pedidos. */
   function pintarPL(){
+    /* Los Bloki al mes son el punto de partida: los pedidos salen de cuántas unidades trae cada uno. */
+    var undPorPedido = SKUS.reduce(function(a, sk){ return a + v(sk.ped)/100 * sk.u; }, 0);
+    var pedidos = undPorPedido > 0 ? v('undTotal')/undPorPedido : 0;
     var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, ff:0, imp:0, sin:0, margen:0, ped:0, und:0};
     SKUS.forEach(function(sk){
-      var n = Math.round(v('pedTotal') * v(sk.ped)/100); if (!(n > 0)) return;
+      var n = pedidos * v(sk.ped)/100; if (!(n > 0)) return;
       var p = unidad(sk), m = margen(p);
       t.venta += n*p.cobrado; t.iva += n*p.iva; t.costo += n*p.costo;
       t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete; t.ff += n*p.ff;
@@ -571,15 +574,15 @@ section > .note{max-width:none;}
     var berMix = t.margen > 0 ? t.sin/t.margen : 0;
     var por = function(x){ return t.ped ? x/t.ped : 0; };
 
-    $('.js-tot-ped').textContent = t.ped.toLocaleString('es-CO');
-    $('.js-tot-und').textContent = t.und.toLocaleString('es-CO')+' unidades';
+    $('.js-tot-ped').textContent = Math.round(t.ped).toLocaleString('es-CO')+' pedidos';
+    $('.js-tot-und').textContent = dec(undPorPedido,1)+' Bloki por pedido';
     $('.js-venta').textContent = mm(t.venta);
     $('.js-pauta').textContent = mm(pauta);
     $('.js-pautadia').textContent = mm(pauta/30)+' al día';
 
     var filas = [
       ['head','Rubro','Al mes','Por pedido',''],
-      ['','Lo que cobra la tienda', t.venta, por(t.venta), t.ped.toLocaleString('es-CO')+' pedidos · '+t.und.toLocaleString('es-CO')+' Bloki'],
+      ['','Lo que cobra la tienda', t.venta, por(t.venta), Math.round(t.ped).toLocaleString('es-CO')+' pedidos · '+Math.round(t.und).toLocaleString('es-CO')+' Bloki'],
       ['','IVA', -t.iva, -por(t.iva), 'Se le entrega a la DIAN'],
       ['','Costo de producto', -t.costo, -por(t.costo), cop(v('prod')+v('tag')+v('bolsa'))+' por unidad + '+cop(v('postal'))+' de empaque por pedido'],
       ['','Comisión Bold', -t.bold, -por(t.bold), tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
@@ -600,16 +603,17 @@ section > .note{max-width:none;}
     var suma = SKUS.reduce(function(a, sk){ return a + v(sk.ped); }, 0);
     var aviso = Math.abs(suma - 100) > 0.5
       ? '<br><strong>Ojo:</strong> los porcentajes suman ' + dec(suma, 0) + ' %, no 100. La tabla está contando ' +
-        t.ped.toLocaleString('es-CO') + ' pedidos, no ' + Math.round(v('pedTotal')).toLocaleString('es-CO') + '.'
+        Math.round(t.ped).toLocaleString('es-CO') + ' pedidos.'
       : '';
     $('.js-veredicto').innerHTML = !t.ped
-      ? '<strong>Pon cuántos pedidos de cada precio esperas en el mes</strong> y la tabla se arma sola.'
+      ? '<strong>Pon cuántos Bloki esperas vender al mes</strong> y cómo se reparten, y la tabla se arma sola.'
       : queda <= 0
       ? '<strong>Con esta mezcla el mes no deja nada.</strong> El break-even de la mezcla es '+dec(berMix,2)+
         ' y estás modelando '+dec(roas,2)+': o sube el retorno, o mueve la mezcla hacia los precios que más dejan.'
       : '<strong>Esa mezcla da un break-even de '+dec(berMix,2)+'</strong>, que es el promedio ponderado de los seis precios. '+
         'Con un ROAS de '+dec(roas,2)+' quedan '+mm(queda)+' al mes, o sea '+cop(por(queda))+' por pedido. '+
-        'Son '+t.und.toLocaleString('es-CO')+' Bloki saliendo de bodega: eso es lo que hay que tener producido.' + aviso;
+        'Los '+Math.round(t.und).toLocaleString('es-CO')+' Bloki salen en '+Math.round(t.ped).toLocaleString('es-CO')+
+        ' pedidos, a '+dec(undPorPedido,1)+' unidades cada uno.' + aviso;
   }
 
   /* El envío es la decisión que más mueve el piso: se muestran los dos lados. */
