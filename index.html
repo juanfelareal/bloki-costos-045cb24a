@@ -75,7 +75,8 @@ section > .note{max-width:none;}
 .in{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px;}
 .in.pend{border-color:rgba(224,161,38,.55);background:rgba(224,161,38,.05);}
 .in > span{display:block;font-size:12px;color:var(--muted);line-height:1.35;margin-bottom:8px;min-height:32px;}
-.in .row{display:flex;align-items:baseline;gap:6px;}
+.in .row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.in .row b + em{flex-basis:100%;}
 .in input{width:100%;min-width:0;font-family:var(--sans);font-size:19px;font-weight:500;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line-2);padding:2px 0;font-variant-numeric:tabular-nums;}
 .in input:focus{outline:none;border-bottom-color:var(--accent);}
 .in em{font-style:normal;font-size:13px;color:var(--muted);flex:none;}
@@ -251,7 +252,7 @@ section > .note{max-width:none;}
     <div class="pills">
       <span class="pill"><span class="dot"></span>Costos de producción confirmados</span>
       <span class="pill">Precio regular y de lanzamiento</span>
-      <span class="pill">Envío y flete confirmados · impuestos por definir</span>
+      <span class="pill">Mezcla de los 10 primeros pedidos reales</span>
     </div>
   </div>
 
@@ -279,7 +280,7 @@ section > .note{max-width:none;}
   <section>
     <p class="label">Los supuestos</p>
     <h2>Cada número de este documento <b>sale de aquí.</b></h2>
-    <p>Cámbialos y todo se recalcula. <strong>El IVA del 19 % ya está contado aparte</strong>, en la fila de arriba: se cobra con el precio y se le entrega a la DIAN. El campo de régimen es otra cosa: es lo que se paga de <strong>SIMPLE o de ICA</strong> como porcentaje de la venta, y es lo único que todavía está en cero.</p>
+    <p>Cámbialos y todo se recalcula. <strong>El IVA del 19 % ya está contado aparte</strong>, en la fila de arriba: se cobra con el precio y se le entrega a la DIAN. El <strong>régimen SIMPLE</strong> es otra cosa: es un 2,0 % de la venta que reemplaza de una vez el impuesto de renta, el ICA y avisos y tableros.</p>
 
     <div class="sup">
       <div class="sup-g"><span class="label">Precios, con IVA</span>
@@ -306,7 +307,7 @@ section > .note{max-width:none;}
         <div class="sup-r"><span>IVA sobre el precio</span><div class="sup-v"><input type="number" id="iva" value="19" step="0.1" class="pct"><em>%</em></div></div>
         <div class="sup-r"><span>Bold, sobre el total cobrado</span><div class="sup-v"><input type="number" id="boldPct" value="2.49" step="0.01" class="pct"><em>% + $</em><input type="text" inputmode="numeric" id="boldFijo" value="450" class="din"></div></div>
         <div class="sup-r"><span>Shopify por pasarela externa</span><div class="sup-v"><input type="number" id="shopPct" value="1" step="0.1" class="pct"><em>%</em></div></div>
-        <div class="sup-r pend"><span>Régimen SIMPLE o ICA <span class="tagm w">Por confirmar</span></span><div class="sup-v"><input type="number" id="impPct" value="0" step="0.1" class="pct"><em>%</em></div></div>
+        <div class="sup-r"><span>Régimen SIMPLE · grupo 2</span><div class="sup-v"><input type="number" id="impPct" value="2" step="0.1" class="pct"><em>%</em></div></div>
       </div>
     </div>
 
@@ -319,7 +320,7 @@ section > .note{max-width:none;}
     <h2>Los dos escenarios, <b>lado a lado.</b></h2>
     <p>Arriba el precio regular, abajo el de lanzamiento. Dentro de cada escenario los combos descuentan contra su propia ancla, así que el x3 es un 33,3 % menos por unidad en los dos casos. Hay dos lecturas en la tabla: el <strong>pago máximo por venta</strong> dice cuánto se puede pagar por conseguir ese pedido —ahí los combos ganan, porque mueven dos o tres Bloki de una—; el <strong>deja por unidad</strong> dice cuánto queda por cada Bloki que sale de la bodega, y ahí se ve el costo real de cada descuento.</p>
     <div class="ptable js-ptable"></div>
-    <p class="note warn"><strong>Lo que cuesta el lanzamiento, en una línea:</strong> un Bloki vendido solo a precio regular deja <strong>$55.888</strong>. El mismo Bloki dentro de un combo x3 de lanzamiento deja <strong>$20.758</strong>, un 37 % de eso. El precio de lanzamiento es una inversión en volumen y en reseñas, no un escenario sostenible: vale la pena saber de antemano cuántas unidades se van a vender así.</p>
+    <p class="note warn"><strong>Lo que cuesta el lanzamiento, en una línea:</strong> un Bloki vendido solo a precio regular deja <strong>$54.377</strong>. El mismo Bloki dentro de un combo x3 de lanzamiento deja <strong>$19.975</strong>, un 37 % de eso. El precio de lanzamiento es una inversión en volumen y en reseñas, no un escenario sostenible: vale la pena saber de antemano cuántas unidades se van a vender así.</p>
     <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. La logística junta dos cosas: el flete que pone la marca —$13.000 menos lo que cobre de envío— y los $2.000 de fulfillment que cobra Simplistics por despachar, que son los mismos en todos los pedidos. El fulfillment entra sin IVA porque ese IVA es descontable. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido. El porcentaje de cada combo se mide contra la unidad de su propio escenario.</p>
   </section>
 
@@ -344,22 +345,23 @@ section > .note{max-width:none;}
   <section>
     <p class="label">El escenario del mes</p>
     <h2>La mezcla del mes <b>y lo que deja.</b></h2>
-    <p>Reparte los pedidos del mes entre los seis precios y pon el retorno que asumes. La tabla suma todo y baja desde lo que cobra la tienda hasta lo que queda. La columna de la izquierda es el mes completo; la de la derecha, el promedio de un pedido de esa mezcla. Los números que vienen puestos son un ejemplo para arrancar, no un pronóstico.</p>
+    <p>Pon cuántos pedidos esperas al mes y cómo se reparten entre los seis precios. La mezcla que viene puesta sale de los <strong>10 primeros pedidos reales</strong> de la tienda: <strong>40 % unidad, 30 % combo x2 y 30 % combo x3</strong>, todos a precio de lanzamiento. La tabla escala esa proporción y baja desde lo que cobra la tienda hasta lo que queda.</p>
 
     <div class="mezcla">
-      <div class="mz-g"><span class="label">Precio regular · pedidos al mes</span><div class="mz-ins">
-        <label class="mz"><span>Unidad</span><input type="number" id="pedRUno" value="50" step="10"></label>
-        <label class="mz"><span>Combo x2</span><input type="number" id="pedRX2" value="25" step="10"></label>
-        <label class="mz"><span>Combo x3</span><input type="number" id="pedRX3" value="15" step="10"></label>
+      <div class="mz-g"><span class="label">Precio regular · % de los pedidos</span><div class="mz-ins">
+        <label class="mz"><span>Unidad</span><input type="number" id="pedRUno" value="0" step="5"></label>
+        <label class="mz"><span>Combo x2</span><input type="number" id="pedRX2" value="0" step="5"></label>
+        <label class="mz"><span>Combo x3</span><input type="number" id="pedRX3" value="0" step="5"></label>
       </div></div>
-      <div class="mz-g"><span class="label">Precio de lanzamiento · pedidos al mes</span><div class="mz-ins">
-        <label class="mz"><span>Unidad</span><input type="number" id="pedLUno" value="250" step="10"></label>
-        <label class="mz"><span>Combo x2</span><input type="number" id="pedLX2" value="100" step="10"></label>
-        <label class="mz"><span>Combo x3</span><input type="number" id="pedLX3" value="60" step="10"></label>
+      <div class="mz-g"><span class="label">Precio de lanzamiento · % de los pedidos</span><div class="mz-ins">
+        <label class="mz"><span>Unidad</span><input type="number" id="pedLUno" value="40" step="5"></label>
+        <label class="mz"><span>Combo x2</span><input type="number" id="pedLX2" value="30" step="5"></label>
+        <label class="mz"><span>Combo x3</span><input type="number" id="pedLX3" value="30" step="5"></label>
       </div></div>
     </div>
 
     <div class="ins" style="grid-template-columns:repeat(auto-fit,minmax(196px,1fr));">
+      <label class="in"><span>Pedidos al mes</span><div class="row"><input type="text" inputmode="numeric" id="pedTotal" value="500" class="din"></div></label>
       <label class="in"><span>ROAS de mercancía (venta sin IVA ÷ pauta)</span><div class="row"><input type="number" id="roas" value="2.5" step="0.1"></div></label>
       <label class="in"><span>Pedidos y unidades al mes</span><div class="row"><b class="js-tot-ped" style="font-size:19px;font-weight:500;"></b><em class="js-tot-und"></em></div></label>
       <label class="in"><span>Venta de la tienda que eso significa</span><div class="row"><b class="js-venta" style="font-size:19px;font-weight:500;"></b></div></label>
@@ -368,24 +370,24 @@ section > .note{max-width:none;}
 
     <div class="pl js-pl"></div>
     <p class="note js-veredicto"></p>
-    <p class="note"><strong>Para qué sirve mover la mezcla.</strong> El break-even que sale abajo es el promedio ponderado de los seis precios: con la mezcla que viene puesta da <strong>1,60</strong>, y se mueve entre <strong>1,35</strong> —todo a unidad regular— y <strong>1,89</strong> —todo a combo x3 de lanzamiento—. Ese es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto. Y las unidades que salen de bodega no son los pedidos: con 500 pedidos de esta mezcla salen <strong>775 Bloki</strong>.</p>
+    <p class="note"><strong>De dónde sale la mezcla.</strong> Los 10 primeros pedidos fueron 4 unidades, 3 combos x2 y 3 combos x3 — todos a precio de lanzamiento, ninguno a precio regular. Son <strong>1,9 Bloki por pedido</strong>, así que las unidades que salen de bodega casi doblan el número de pedidos: con 500 pedidos salen <strong>950 Bloki</strong>. El break-even que sale abajo es el promedio ponderado de esa mezcla, y es el número contra el que hay que juzgar el retorno real de la pauta, no el de un precio suelto.</p>
   </section>
 
   <!-- PENDIENTES -->
   <section>
     <p class="label">Qué falta para cerrar</p>
-    <h2>Cuatro cosas <b>y el modelo queda en firme.</b></h2>
+    <h2>Tres cosas <b>y el modelo queda en firme.</b></h2>
     <ul class="inc">
       <li><div>Si el envío gratis de los combos se sostiene<span>Cuesta $13.000 por pedido y sale entero del margen. Con los precios anclados al regular ya se aguanta, pero es el primer lugar donde buscar margen si hace falta.</span></div></li>
       <li><div>Tarifas reales de Bold al arrancar<span>Las que están puestas (2,49 % + $450) son las de Barba Roja, que factura $85 millones al mes. Al arrancar, Bold suele cobrar más.</span></div></li>
-      <li><div>Régimen de impuestos: SIMPLE o ICA<span>No es el IVA, que ya está contado. Es el porcentaje de la venta que se paga por el régimen SIMPLE, o el ICA del municipio si están en régimen ordinario. Es el único costo variable que sigue en cero.</span></div></li>
+      <li><div>Confirmar el régimen SIMPLE con la contadora<span>El modelo asume SIMPLE grupo 2 (comercio al por mayor y detal) al 2,0 %, que es la tarifa del artículo 908 para ingresos brutos anuales entre 6.000 y 15.000 UVT, o sea entre $314 y $786 millones al año. Por debajo de eso la tarifa baja a 1,6 %; por encima sube a 3,5 %. Hay que inscribirse antes del 28 de febrero.</span></div></li>
       <li><div>Si los $11.152 de producto ya traen IVA<span>El fulfillment ya entra sin IVA, porque es descontable. Falta saber si el costo de producción, el tag y la bolsa vienen con IVA: si es así y también se descuenta, el costo real baja y el break-even mejora.</span></div></li>
     </ul>
     <p class="note warn"><strong>Lo que este documento no dice:</strong> "Queda" es antes de impuestos, de los costos fijos y de lo que cueste producir el contenido del lanzamiento. Es lo que deja la operación de vender, no la utilidad final.</p>
   </section>
 
   <div class="next">
-    <h2><b>El piso ya está.</b><br><span class="soft">De 1,35 en la unidad regular a 1,89 en el combo x3 de lanzamiento.</span></h2>
+    <h2><b>El piso ya está.</b><br><span class="soft">De 1,39 en la unidad regular a 1,96 en el combo x3 de lanzamiento.</span></h2>
     <p>Con el régimen de impuestos y las tarifas reales de Bold queda cerrado del todo, y se puede definir cuánto se invierte el día del lanzamiento.</p>
   </div>
 
@@ -397,7 +399,7 @@ section > .note{max-width:none;}
 </div>
 <script>
 (function(){
-  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','ff','boldPct','boldFijo','shopPct','impPct','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
+  var IDS = ['rUno','rX2','rX3','lUno','lX2','lX3','prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','ff','boldPct','boldFijo','shopPct','impPct','pedTotal','pedRUno','pedRX2','pedRX3','pedLUno','pedLX2','pedLX3','roas'];
   var SKUS = [
     {n:'Unidad',    g:'reg', id:'rUno', ped:'pedRUno', ancla:'rUno', u:1, combo:false},
     {n:'Combo x2',  g:'reg', id:'rX2',  ped:'pedRX2',  ancla:'rUno', u:2, combo:true},
@@ -464,7 +466,7 @@ section > .note{max-width:none;}
       ['Comisión Bold', p.bold, '#6E6A64', 'sobre todo lo que paga el cliente'],
       ['Comisión Shopify', p.shopify, '#9C9790', 'por procesar con pasarela externa'],
       ['Fulfillment', p.ff, '#A8A39B', 'Simplistics, por despachar el pedido'],
-      ['SIMPLE o ICA', p.impuestos, '#CFCBC4', 'impuestos que se pagan sobre la venta'],
+      ['Régimen SIMPLE', p.impuestos, '#CFCBC4', 'reemplaza renta, ICA y avisos'],
       ['Queda para pauta y utilidad', m, '#44BF47', 'lo único con lo que se compra una venta']
     ].filter(function(x){ return Math.abs(x[1]) > 1; });
     var total = p.cobrado || 1;
@@ -556,7 +558,7 @@ section > .note{max-width:none;}
   function pintarPL(){
     var t = {venta:0, iva:0, costo:0, bold:0, shop:0, flete:0, ff:0, imp:0, sin:0, margen:0, ped:0, und:0};
     SKUS.forEach(function(sk){
-      var n = v(sk.ped); if (!(n > 0)) return;
+      var n = Math.round(v('pedTotal') * v(sk.ped)/100); if (!(n > 0)) return;
       var p = unidad(sk), m = margen(p);
       t.venta += n*p.cobrado; t.iva += n*p.iva; t.costo += n*p.costo;
       t.bold += n*p.bold; t.shop += n*p.shopify; t.flete += n*p.flete; t.ff += n*p.ff;
@@ -584,7 +586,7 @@ section > .note{max-width:none;}
       ['','Comisión Shopify', -t.shop, -por(t.shop), tar(v('shopPct'))+' % sobre el total cobrado'],
       ['','Flete a la transportadora', -t.flete, -por(t.flete), cop(v('flete'))+' por pedido, cobre o no cobre envío'],
       ['','Fulfillment', -t.ff, -por(t.ff), 'Simplistics: '+cop(v('ff'))+' por pedido despachado, sin IVA porque es descontable'],
-      ['','Régimen SIMPLE o ICA', -t.imp, -por(t.imp), v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente: SIMPLE o ICA'],
+      ['','Régimen SIMPLE', -t.imp, -por(t.imp), v('impPct')>0 ? 'SIMPLE grupo 2: '+tar(v('impPct'))+' % de la venta sin IVA' : 'Sin impuestos sobre la venta'],
       ['sub','Queda antes de pauta', t.margen, por(t.margen), 'Con esto se compran las ventas'],
       ['','Inversión en pauta', -pauta, -por(pauta), 'ROAS de mercancía '+dec(roas,2)],
       ['tot','Queda después de la pauta', queda, por(queda), 'Antes de impuestos y costos fijos']
@@ -595,6 +597,11 @@ section > .note{max-width:none;}
              '</div><div class="n">'+mm(f[2])+'</div><div class="n pp">'+cop(f[3])+'</div></div>';
     }).join('');
 
+    var suma = SKUS.reduce(function(a, sk){ return a + v(sk.ped); }, 0);
+    var aviso = Math.abs(suma - 100) > 0.5
+      ? '<br><strong>Ojo:</strong> los porcentajes suman ' + dec(suma, 0) + ' %, no 100. La tabla está contando ' +
+        t.ped.toLocaleString('es-CO') + ' pedidos, no ' + Math.round(v('pedTotal')).toLocaleString('es-CO') + '.'
+      : '';
     $('.js-veredicto').innerHTML = !t.ped
       ? '<strong>Pon cuántos pedidos de cada precio esperas en el mes</strong> y la tabla se arma sola.'
       : queda <= 0
@@ -602,7 +609,7 @@ section > .note{max-width:none;}
         ' y estás modelando '+dec(roas,2)+': o sube el retorno, o mueve la mezcla hacia los precios que más dejan.'
       : '<strong>Esa mezcla da un break-even de '+dec(berMix,2)+'</strong>, que es el promedio ponderado de los seis precios. '+
         'Con un ROAS de '+dec(roas,2)+' quedan '+mm(queda)+' al mes, o sea '+cop(por(queda))+' por pedido. '+
-        'Son '+t.und.toLocaleString('es-CO')+' Bloki saliendo de bodega: eso es lo que hay que tener producido.';
+        'Son '+t.und.toLocaleString('es-CO')+' Bloki saliendo de bodega: eso es lo que hay que tener producido.' + aviso;
   }
 
   /* El envío es la decisión que más mueve el piso: se muestran los dos lados. */
