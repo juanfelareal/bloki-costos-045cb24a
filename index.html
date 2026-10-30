@@ -197,6 +197,24 @@ section > .note{max-width:none;}
 }
 
 
+
+/* Supuestos en lista, agrupados por tema */
+.sup{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;align-items:start;}
+.sup-g{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 22px 6px;}
+.sup-g > .label{margin-bottom:4px;}
+.sup-r{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);}
+.sup-g .sup-r:last-child{border-bottom:0;}
+.sup-r > span{font-size:15px;color:var(--ink-2);}
+.sup-r.pend > span{color:#9a6c11;}
+.sup-v{display:flex;align-items:baseline;gap:5px;flex:none;}
+.sup-v input{text-align:right;font-family:var(--sans);font-size:17px;font-weight:500;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line-2);padding:2px 0;font-variant-numeric:tabular-nums;}
+.sup-v input.din{width:86px;}
+.sup-v input.pct{width:52px;}
+.sup-v input:focus{outline:none;border-bottom-color:var(--accent);}
+.sup-v em{font-style:normal;font-size:14px;color:var(--muted);}
+@media (max-width:720px){.sup{grid-template-columns:1fr;}}
+@media print{.sup-v input{border-bottom:0;}}
+
 /* Mezcla del mes: cuántos pedidos de cada precio */
 .mezcla{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;}
 .mz-g{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;}
@@ -261,27 +279,35 @@ section > .note{max-width:none;}
   <section>
     <p class="label">Los supuestos</p>
     <h2>Cada número de este documento <b>sale de aquí.</b></h2>
-    <p>Cámbialos y todo se recalcula. Los que están en naranja todavía no están definidos, y son los que más mueven la aguja.</p>
+    <p>Cámbialos y todo se recalcula. <strong>El IVA del 19 % ya está contado aparte</strong>, en la fila de arriba: se cobra con el precio y se le entrega a la DIAN. El campo de régimen es otra cosa: es lo que se paga de <strong>SIMPLE o de ICA</strong> como porcentaje de la venta, y es lo único que todavía está en cero.</p>
 
-    <div class="ins">
-      <label class="in"><span>Regular · unidad</span><div class="row"><em>$</em><input type="number" id="rUno" value="89900" step="1000"></div></label>
-      <label class="in"><span>Regular · combo x2</span><div class="row"><em>$</em><input type="number" id="rX2" value="154900" step="1000"></div></label>
-      <label class="in"><span>Regular · combo x3</span><div class="row"><em>$</em><input type="number" id="rX3" value="179900" step="1000"></div></label>
-      <label class="in"><span>Lanzamiento · unidad</span><div class="row"><em>$</em><input type="number" id="lUno" value="69900" step="1000"></div></label>
-      <label class="in"><span>Lanzamiento · combo x2</span><div class="row"><em>$</em><input type="number" id="lX2" value="119900" step="1000"></div></label>
-      <label class="in"><span>Lanzamiento · combo x3</span><div class="row"><em>$</em><input type="number" id="lX3" value="139900" step="1000"></div></label>
-      <label class="in"><span>Producción de un Bloki</span><div class="row"><em>$</em><input type="number" id="prod" value="9500" step="100"></div></label>
-      <label class="in"><span>Tag NFC</span><div class="row"><em>$</em><input type="number" id="tag" value="1012" step="50"></div></label>
-      <label class="in"><span>Bolsa, por unidad</span><div class="row"><em>$</em><input type="number" id="bolsa" value="640" step="50"></div></label>
-      <label class="in"><span>Empaque postal, por pedido</span><div class="row"><em>$</em><input type="number" id="postal" value="1500" step="100"></div></label>
-      <label class="in"><span>IVA sobre el precio</span><div class="row"><input type="number" id="iva" value="19" step="1"><em>%</em></div></label>
-      <label class="in"><span>Envío cobrado en unidad suelta</span><div class="row"><em>$</em><input type="number" id="envioUno" value="12000" step="500"></div></label>
-      <label class="in"><span>Envío cobrado en los combos</span><div class="row"><em>$</em><input type="number" id="envioCombo" value="0" step="500"></div></label>
-      <label class="in"><span>Flete que paga la marca, por pedido</span><div class="row"><em>$</em><input type="number" id="flete" value="13000" step="500"></div></label>
-      <label class="in"><span>Fulfillment por pedido despachado</span><div class="row"><em>$</em><input type="number" id="ff" value="2000" step="100"></div></label>
-      <label class="in"><span>Comisión Bold, sobre el total cobrado</span><div class="row"><input type="number" id="boldPct" value="2.49" step="0.01"><em>% + $</em><input type="number" id="boldFijo" value="450" step="50"></div></label>
-      <label class="in"><span>Comisión Shopify por pasarela externa</span><div class="row"><input type="number" id="shopPct" value="1" step="0.1"><em>%</em></div></label>
-      <label class="in pend"><span>Impuestos sobre la venta <span class="tagm w">Por confirmar</span></span><div class="row"><input type="number" id="impPct" value="0" step="0.1"><em>%</em></div></label>
+    <div class="sup">
+      <div class="sup-g"><span class="label">Precios, con IVA</span>
+        <div class="sup-r"><span>Regular · unidad</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="rUno" value="89.900" class="din"></div></div>
+        <div class="sup-r"><span>Regular · combo x2</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="rX2" value="154.900" class="din"></div></div>
+        <div class="sup-r"><span>Regular · combo x3</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="rX3" value="179.900" class="din"></div></div>
+        <div class="sup-r"><span>Lanzamiento · unidad</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="lUno" value="69.900" class="din"></div></div>
+        <div class="sup-r"><span>Lanzamiento · combo x2</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="lX2" value="119.900" class="din"></div></div>
+        <div class="sup-r"><span>Lanzamiento · combo x3</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="lX3" value="139.900" class="din"></div></div>
+      </div>
+      <div class="sup-g"><span class="label">Costo del producto</span>
+        <div class="sup-r"><span>Producción de un Bloki</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="prod" value="9.500" class="din"></div></div>
+        <div class="sup-r"><span>Tag NFC</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="tag" value="1.012" class="din"></div></div>
+        <div class="sup-r"><span>Bolsa, por unidad</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="bolsa" value="640" class="din"></div></div>
+        <div class="sup-r"><span>Empaque postal, por pedido</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="postal" value="1.500" class="din"></div></div>
+      </div>
+      <div class="sup-g"><span class="label">Logística, por pedido</span>
+        <div class="sup-r"><span>Envío cobrado · unidad suelta</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioUno" value="12.000" class="din"></div></div>
+        <div class="sup-r"><span>Envío cobrado · combos</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="envioCombo" value="0" class="din"></div></div>
+        <div class="sup-r"><span>Flete que paga la marca</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="flete" value="13.000" class="din"></div></div>
+        <div class="sup-r"><span>Fulfillment Simplistics</span><div class="sup-v"><em>$</em><input type="text" inputmode="numeric" id="ff" value="2.000" class="din"></div></div>
+      </div>
+      <div class="sup-g"><span class="label">Comisiones e impuestos</span>
+        <div class="sup-r"><span>IVA sobre el precio</span><div class="sup-v"><input type="number" id="iva" value="19" step="0.1" class="pct"><em>%</em></div></div>
+        <div class="sup-r"><span>Bold, sobre el total cobrado</span><div class="sup-v"><input type="number" id="boldPct" value="2.49" step="0.01" class="pct"><em>% + $</em><input type="text" inputmode="numeric" id="boldFijo" value="450" class="din"></div></div>
+        <div class="sup-r"><span>Shopify por pasarela externa</span><div class="sup-v"><input type="number" id="shopPct" value="1" step="0.1" class="pct"><em>%</em></div></div>
+        <div class="sup-r pend"><span>Régimen SIMPLE o ICA <span class="tagm w">Por confirmar</span></span><div class="sup-v"><input type="number" id="impPct" value="0" step="0.1" class="pct"><em>%</em></div></div>
+      </div>
     </div>
 
     <p class="note warn"><strong>El envío no es neutro, y en los combos es el costo escondido.</strong> En la unidad suelta el cliente paga <strong>$12.000</strong> y el flete cuesta <strong>$13.000</strong>: la marca pone $1.000. En los combos el envío va gratis, así que la marca pone los <strong>$13.000 completos</strong>. Sumado al descuento, eso lleva el break-even del combo x3 de lanzamiento a <strong class="js-ber-x3">1,83</strong>, contra <strong class="js-ber-reg">1,31</strong> de la unidad a precio regular. Son los dos extremos del documento.</p>
@@ -352,7 +378,7 @@ section > .note{max-width:none;}
     <ul class="inc">
       <li><div>Si el envío gratis de los combos se sostiene<span>Cuesta $13.000 por pedido y sale entero del margen. Con los precios anclados al regular ya se aguanta, pero es el primer lugar donde buscar margen si hace falta.</span></div></li>
       <li><div>Tarifas reales de Bold al arrancar<span>Las que están puestas (2,49 % + $450) son las de Barba Roja, que factura $85 millones al mes. Al arrancar, Bold suele cobrar más.</span></div></li>
-      <li><div>Régimen de impuestos<span>Es el único costo variable que todavía está en cero. Con el porcentaje real, el break-even queda cerrado del todo.</span></div></li>
+      <li><div>Régimen de impuestos: SIMPLE o ICA<span>No es el IVA, que ya está contado. Es el porcentaje de la venta que se paga por el régimen SIMPLE, o el ICA del municipio si están en régimen ordinario. Es el único costo variable que sigue en cero.</span></div></li>
       <li><div>Si los $11.152 de producto ya traen IVA<span>El fulfillment ya entra sin IVA, porque es descontable. Falta saber si el costo de producción, el tag y la bolsa vienen con IVA: si es así y también se descuenta, el costo real baja y el break-even mejora.</span></div></li>
     </ul>
     <p class="note warn"><strong>Lo que este documento no dice:</strong> "Queda" es antes de impuestos, de los costos fijos y de lo que cueste producir el contenido del lanzamiento. Es lo que deja la operación de vender, no la utilidad final.</p>
@@ -385,7 +411,20 @@ section > .note{max-width:none;}
   var sel = 0;
 
   var $ = function(s){return document.querySelector(s);};
-  var v = function(id){var n=parseFloat(document.getElementById(id).value); return isFinite(n)?n:0;};
+  /* Los campos de plata se escriben con separador de miles, así que hay que limpiarlos para leerlos. */
+  function v(id){
+    var e = document.getElementById(id); if (!e) return 0;
+    var txt = String(e.value);
+    var n = e.classList.contains('din')
+      ? parseFloat(txt.replace(/[^\d-]/g, ''))
+      : parseFloat(txt.replace(/\./g, '.').replace(',', '.'));
+    return isFinite(n) ? n : 0;
+  }
+  function formatearPlata(){
+    document.querySelectorAll('input.din').forEach(function(e){
+      e.value = (parseFloat(String(e.value).replace(/[^\d-]/g,'')) || 0).toLocaleString('es-CO');
+    });
+  }
   function cop(n){ return (n<0?'−$':'$') + Math.round(Math.abs(n)).toLocaleString('es-CO'); }
   function mm(n){ return (n<0?'−$':'$') + Math.round(Math.abs(n)).toLocaleString('es-CO'); }
   function dec(n,d){ return n.toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d}); }
@@ -425,7 +464,7 @@ section > .note{max-width:none;}
       ['Comisión Bold', p.bold, '#6E6A64', 'sobre todo lo que paga el cliente'],
       ['Comisión Shopify', p.shopify, '#9C9790', 'por procesar con pasarela externa'],
       ['Fulfillment', p.ff, '#A8A39B', 'Simplistics, por despachar el pedido'],
-      ['Impuestos', p.impuestos, '#CFCBC4', 'sobre la venta sin IVA'],
+      ['SIMPLE o ICA', p.impuestos, '#CFCBC4', 'impuestos que se pagan sobre la venta'],
       ['Queda para pauta y utilidad', m, '#44BF47', 'lo único con lo que se compra una venta']
     ].filter(function(x){ return Math.abs(x[1]) > 1; });
     var total = p.cobrado || 1;
@@ -545,7 +584,7 @@ section > .note{max-width:none;}
       ['','Comisión Shopify', -t.shop, -por(t.shop), tar(v('shopPct'))+' % sobre el total cobrado'],
       ['','Flete a la transportadora', -t.flete, -por(t.flete), cop(v('flete'))+' por pedido, cobre o no cobre envío'],
       ['','Fulfillment', -t.ff, -por(t.ff), 'Simplistics: '+cop(v('ff'))+' por pedido despachado, sin IVA porque es descontable'],
-      ['','Impuestos sobre la venta', -t.imp, -por(t.imp), v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente de confirmar el régimen'],
+      ['','Régimen SIMPLE o ICA', -t.imp, -por(t.imp), v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente: SIMPLE o ICA'],
       ['sub','Queda antes de pauta', t.margen, por(t.margen), 'Con esto se compran las ventas'],
       ['','Inversión en pauta', -pauta, -por(pauta), 'ROAS de mercancía '+dec(roas,2)],
       ['tot','Queda después de la pauta', queda, por(queda), 'Antes de impuestos y costos fijos']
@@ -587,7 +626,12 @@ section > .note{max-width:none;}
     var b = ev.target.closest('button'); if(!b) return;
     sel = +b.dataset.i; render();
   });
-  IDS.forEach(function(id){ document.getElementById(id).addEventListener('input', render); });
+  IDS.forEach(function(id){
+    var e = document.getElementById(id); if (!e) return;
+    e.addEventListener('input', render);
+    if (e.classList.contains('din')) e.addEventListener('blur', function(){ formatearPlata(); });
+  });
+  formatearPlata();
   render();
 })();
 </script>
