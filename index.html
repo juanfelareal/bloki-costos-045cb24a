@@ -99,7 +99,7 @@ strong{font-weight:600;color:var(--ink);}
 
 /* Tabla de productos */
 .ptable{margin-top:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;}
-.pr{display:grid;grid-template-columns:2fr repeat(6,1fr);gap:10px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums;}
+.pr{display:grid;grid-template-columns:1.7fr repeat(7,1fr);gap:10px;align-items:center;padding:13px 18px;border-bottom:1px solid var(--line);font-size:14px;font-variant-numeric:tabular-nums;}
 .pr:last-child{border-bottom:0;}
 .pr .pv{text-align:right;}
 .pr .pv span{display:none;}
@@ -216,7 +216,7 @@ strong{font-weight:600;color:var(--ink);}
     <div class="pills">
       <span class="pill"><span class="dot"></span>Costos de producción confirmados</span>
       <span class="pill">Precios de lanzamiento</span>
-      <span class="pill">Los supuestos en naranja están por confirmar</span>
+      <span class="pill">Envío y flete confirmados · impuestos por definir</span>
     </div>
   </div>
 
@@ -252,23 +252,24 @@ strong{font-weight:600;color:var(--ink);}
       <label class="in"><span>Bolsa, por unidad</span><div class="row"><em>$</em><input type="number" id="bolsa" value="640" step="50"></div></label>
       <label class="in"><span>Empaque postal, por pedido</span><div class="row"><em>$</em><input type="number" id="postal" value="1500" step="100"></div></label>
       <label class="in"><span>IVA sobre el precio</span><div class="row"><input type="number" id="iva" value="19" step="1"><em>%</em></div></label>
-      <label class="in pend"><span>Envío que se le cobra al cliente <span class="tagm w">Por definir</span></span><div class="row"><em>$</em><input type="number" id="envio" value="12900" step="100"></div></label>
-      <label class="in pend"><span>Flete que paga la marca <span class="tagm w">Por confirmar</span></span><div class="row"><em>$</em><input type="number" id="flete" value="12900" step="100"></div></label>
+      <label class="in"><span>Envío cobrado en unidad suelta</span><div class="row"><em>$</em><input type="number" id="envioUno" value="12000" step="500"></div></label>
+      <label class="in"><span>Envío cobrado en los combos</span><div class="row"><em>$</em><input type="number" id="envioCombo" value="0" step="500"></div></label>
+      <label class="in"><span>Flete que paga la marca, por pedido</span><div class="row"><em>$</em><input type="number" id="flete" value="13000" step="500"></div></label>
       <label class="in"><span>Comisión Bold, sobre el total cobrado</span><div class="row"><input type="number" id="boldPct" value="2.49" step="0.01"><em>% + $</em><input type="number" id="boldFijo" value="450" step="50"></div></label>
       <label class="in"><span>Comisión Shopify por pasarela externa</span><div class="row"><input type="number" id="shopPct" value="1" step="0.1"><em>%</em></div></label>
       <label class="in pend"><span>Impuestos sobre la venta <span class="tagm w">Por confirmar</span></span><div class="row"><input type="number" id="impPct" value="0" step="0.1"><em>%</em></div></label>
     </div>
 
-    <p class="note warn"><strong>El envío es la decisión que más pesa.</strong> Hoy el modelo asume que el cliente paga el flete y que eso cubre lo que se le paga a la transportadora, así que entra y sale. Si el lanzamiento sale con <strong>envío gratis</strong>, esos pesos salen enteros del margen: a precio de lanzamiento el break-even se va de <strong class="js-ber-cobra">1,37</strong> a <strong class="js-ber-gratis">1,94</strong>. Es el mismo producto; cambia solo quién paga el envío.</p>
+    <p class="note warn"><strong>El envío no es neutro, y en los combos es el costo escondido del lanzamiento.</strong> En la unidad suelta el cliente paga <strong>$12.000</strong> y el flete cuesta <strong>$13.000</strong>: la marca pone $1.000. En los combos el envío va gratis, así que la marca pone los <strong>$13.000 completos</strong>. Eso solo ya mueve el break-even del combo x3 a <strong class="js-ber-x3">1,83</strong>, contra <strong class="js-ber-reg">1,31</strong> de la unidad a precio regular.</p>
   </section>
 
   <!-- PRECIOS -->
   <section>
     <p class="label">Precio por precio</p>
     <h2>Lo que aguanta <b>cada forma de venderlo.</b></h2>
-    <p>Mientras más bajo el break-even, más se puede invertir para conseguir esa venta. Pero lo que define cuánta plata se puede pagar por un cliente no es el break-even sino el pago máximo: ahí los combos ganan.</p>
+    <p>Dos lecturas distintas en la misma tabla. El <strong>pago máximo por venta</strong> dice cuánto se puede pagar por conseguir ese pedido: ahí los combos ganan, porque mueven más producto de una. El <strong>deja por unidad</strong> dice cuánto queda por cada Bloki que sale de la bodega: ahí la unidad suelta a precio regular gana por mucho.</p>
     <div class="ptable js-ptable"></div>
-    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones y los impuestos. El pago máximo por venta es esa misma plata que queda: es el techo de lo que se puede pagar por conseguir el pedido.</p>
+    <p class="fine">El break-even es el precio sin IVA dividido por lo que queda después del producto, las comisiones, el flete y los impuestos. El flete neto es lo que pone la marca: $13.000 menos lo que cobre de envío. El pago máximo por venta es esa plata que queda; el deja por unidad es esa misma plata dividida entre los Bloki que lleva el pedido.</p>
   </section>
 
   <!-- ESCALABILIDAD -->
@@ -308,10 +309,10 @@ strong{font-weight:600;color:var(--ink);}
   <!-- PENDIENTES -->
   <section>
     <p class="label">Qué falta para cerrar</p>
-    <h2>Cuatro decisiones <b>y el modelo queda en firme.</b></h2>
+    <h2>Cuatro cosas <b>y el modelo queda en firme.</b></h2>
     <ul class="inc">
-      <li><div>Si el envío se cobra o va gratis<span>Es lo que más mueve el break-even. A precio de lanzamiento, la diferencia entre cobrarlo y regalarlo es pasar de 1,37 a 1,94.</span></div></li>
-      <li><div>Cuánto cuesta el flete de verdad<span>El modelo asume que lo que se cobra alcanza para pagarlo. Si cuesta más, la diferencia sale del margen de cada pedido.</span></div></li>
+      <li><div>Si el envío gratis de los combos se sostiene<span>Hoy cuesta $13.000 por pedido que sale entero del margen. Subir el combo x2 a $129.900 recupera esos pesos sin tocar el precio por unidad.</span></div></li>
+      <li><div>Tarifas reales de Bold al arrancar<span>Las que están puestas (2,49 % + $450) son las de Barba Roja, que factura $85 millones al mes. Al arrancar, Bold suele cobrar más.</span></div></li>
       <li><div>Régimen de impuestos<span>Es el único costo variable que todavía está en cero. Con el porcentaje real, el break-even queda cerrado del todo.</span></div></li>
       <li><div>Si los costos de producción ya traen IVA<span>Si esos $11.152 son con IVA y parte es descontable, el costo real baja y el break-even mejora.</span></div></li>
     </ul>
@@ -319,8 +320,8 @@ strong{font-weight:600;color:var(--ink);}
   </section>
 
   <div class="next">
-    <h2><b>Arranquemos por el envío.</b><br><span class="soft">Esa sola decisión mueve el break-even medio punto.</span></h2>
-    <p>Con eso y el régimen de impuestos, el piso queda en firme y se puede definir cuánto se invierte el día del lanzamiento.</p>
+    <h2><b>El piso ya está.</b><br><span class="soft">De 1,31 en la unidad suelta a 1,83 en el combo x3.</span></h2>
+    <p>Con el régimen de impuestos y las tarifas reales de Bold queda cerrado del todo, y se puede definir cuánto se invierte el día del lanzamiento.</p>
   </div>
 
   <div class="foot">
@@ -331,12 +332,12 @@ strong{font-weight:600;color:var(--ink);}
 </div>
 <script>
 (function(){
-  var IDS = ['prod','tag','bolsa','postal','iva','envio','flete','boldPct','boldFijo','shopPct','impPct','ped','roas'];
+  var IDS = ['prod','tag','bolsa','postal','iva','envioUno','envioCombo','flete','boldPct','boldFijo','shopPct','impPct','ped','roas'];
   var SKUS = [
-    {k:'reg',  n:'Bloki',          sub:'precio regular',     pvp:89900,  u:1},
-    {k:'lan',  n:'Bloki',          sub:'precio lanzamiento', pvp:69900,  u:1},
-    {k:'x2',   n:'Combo x2',       sub:'lanzamiento',        pvp:119900, u:2},
-    {k:'x3',   n:'Combo x3',       sub:'lanzamiento',        pvp:139900, u:3}
+    {k:'reg',  n:'Bloki',    sub:'precio regular',     pvp:89900,  u:1, combo:false},
+    {k:'lan',  n:'Bloki',    sub:'precio lanzamiento', pvp:69900,  u:1, combo:false},
+    {k:'x2',   n:'Combo x2', sub:'lanzamiento',        pvp:119900, u:2, combo:true},
+    {k:'x3',   n:'Combo x3', sub:'lanzamiento',        pvp:139900, u:3, combo:true}
   ];
   var sel = 0;
 
@@ -349,7 +350,7 @@ strong{font-weight:600;color:var(--ink);}
 
   /* Todo lo que depende de un pedido de un SKU dado. */
   function unidad(s){
-    var iva = v('iva')/100, envio = v('envio');
+    var iva = v('iva')/100, envio = s.combo ? v('envioCombo') : v('envioUno');
     var sin = s.pvp/(1+iva);
     var cobrado = s.pvp + envio;
     return {
@@ -392,16 +393,17 @@ strong{font-weight:600;color:var(--ink);}
 
   function pintarTabla(){
     var head = '<div class="pr ph"><div class="pn">Qué se vende</div><div class="pv">Precio con IVA</div>'+
-      '<div class="pv">Sin IVA</div><div class="pv">Costo</div><div class="pv">Comisiones</div>'+
-      '<div class="pv">Pago máx. por venta</div><div class="pv">Break-even</div></div>';
+      '<div class="pv">Costo</div><div class="pv">Comisiones</div><div class="pv">Flete neto</div>'+
+      '<div class="pv">Pago máx. por venta</div><div class="pv">Deja por unidad</div><div class="pv">Break-even</div></div>';
     $('.js-ptable').innerHTML = head + SKUS.map(function(s,i){
       var p = unidad(s), m = margen(p);
       return '<div class="pr'+(i===sel?' hl':'')+'"><div class="pn">'+s.n+' <span class="tagm">'+s.sub+'</span></div>'+
         '<div class="pv"><span>Precio con IVA</span>'+cop(s.pvp)+'</div>'+
-        '<div class="pv"><span>Sin IVA</span>'+cop(p.sin)+'</div>'+
         '<div class="pv"><span>Costo</span>'+cop(p.costo)+'</div>'+
         '<div class="pv"><span>Comisiones</span>'+cop(p.bold+p.shopify)+'</div>'+
+        '<div class="pv"><span>Flete neto</span>'+cop(p.flete-p.envio)+'</div>'+
         '<div class="pv"><span>Pago máx. por venta</span>'+cop(m)+'</div>'+
+        '<div class="pv"><span>Deja por unidad</span>'+cop(m/s.u)+'</div>'+
         '<div class="pv be"><span>Break-even</span>'+(m>0?dec(p.sin/m,2):'—')+'</div></div>';
     }).join('');
   }
@@ -474,7 +476,7 @@ strong{font-weight:600;color:var(--ink);}
       ['','Costo de producto', -ped*p.costo, -p.costo, cop(v('prod')+v('tag')+v('bolsa'))+' por unidad × '+p.u+' + '+cop(v('postal'))+' de empaque'],
       ['','Comisión Bold', -ped*p.bold, -p.bold, tar(v('boldPct'))+' % + '+cop(v('boldFijo'))+' sobre el total cobrado'],
       ['','Comisión Shopify', -ped*p.shopify, -p.shopify, tar(v('shopPct'))+' % sobre el total cobrado'],
-      ['','Flete a la transportadora', -ped*p.flete, -p.flete, v('envio')>0 ? 'El cliente aporta '+cop(p.envio)+' de ese flete' : 'Envío gratis: lo asume la marca entera'],
+      ['','Flete a la transportadora', -ped*p.flete, -p.flete, p.envio>0 ? 'El cliente aporta '+cop(p.envio)+' de ese flete' : 'Envío gratis: lo asume la marca entera'],
       ['','Impuestos sobre la venta', -ped*p.impuestos, -p.impuestos, v('impPct')>0 ? tar(v('impPct'))+' % de la venta sin IVA' : 'Pendiente de confirmar el régimen'],
       ['sub','Queda antes de pauta', ped*m, m, 'Con esto se compran las ventas'],
       ['','Inversión en pauta', -pauta, -(ped?pauta/ped:0), 'ROAS de mercancía '+dec(roas,2)],
@@ -495,16 +497,10 @@ strong{font-weight:600;color:var(--ink);}
 
   /* El envío es la decisión que más mueve el piso: se muestran los dos lados. */
   function pintarEnvio(){
-    var s = SKUS[1], p = unidad(s);
-    var conCobro = margen(p);
-    var gratis = (function(){
-      var iva = v('iva')/100, sin = s.pvp/(1+iva), cob = s.pvp;
-      return sin - ((v('prod')+v('tag')+v('bolsa'))*s.u + v('postal'))
-             - (cob*v('boldPct')/100 + v('boldFijo')) - cob*v('shopPct')/100
-             - sin*v('impPct')/100 - v('flete');
-    })();
-    $('.js-ber-cobra').textContent = conCobro>0 ? dec(p.sin/conCobro,2) : '—';
-    $('.js-ber-gratis').textContent = gratis>0 ? dec(p.sin/gratis,2) : '—';
+    [['.js-ber-reg', 0], ['.js-ber-x3', 3]].forEach(function(x){
+      var p = unidad(SKUS[x[1]]), m = margen(p);
+      $(x[0]).textContent = m > 0 ? dec(p.sin/m, 2) : '—';
+    });
   }
 
   function render(){
